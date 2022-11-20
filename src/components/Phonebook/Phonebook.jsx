@@ -2,29 +2,29 @@ import React from 'react';
 // import { nanoid } from 'nanoid';
 
 class Phonebook extends React.Component {
-  state = {
-    contacts: [],
-    name: '',
-  };
-  // handleSubmit = e => {
-  //   e.prevenDefault();
-  //   // this.setState(prevState => ({
-  //   //   contacts: prevState.contacts.push(this.name),
-  //   console.log(this.state);
-  // };
-  handleInputChange = ({ target: { value } }) => {
-    this.setState({
-      name: value,
-    });
-  };
-  handleAddContact = e => {
-    const { contacts, name } = this.state;
-    e.prevenDefault();
-    this.setState = {
-      contacts: contacts.push(name),
+  constructor(props) {
+    super(props);
+    this.state = {
+      contacts: [],
+      name: '',
     };
-    
-  };
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleAddContact = this.handleAddContact.bind(this);
+  }
+
+  handleInputChange(event) {
+    this.setState({
+      name: event.target.value,
+    });
+  }
+  handleAddContact(event) {
+    const { name, contacts } = this.state;
+    event.preventDefault();
+    this.setState({
+      name: "",
+      contacts: [...contacts, name],
+    });
+  }
   render() {
     const { name, contacts } = this.state;
     return (
@@ -47,7 +47,9 @@ class Phonebook extends React.Component {
         </form>
         <h2>Contacts</h2>
         <ul>
-          <li>{contacts}</li>
+          {contacts.map((contact, index) => (
+            <li key={index}>{contact}</li>
+          ))}
         </ul>
       </div>
     );
