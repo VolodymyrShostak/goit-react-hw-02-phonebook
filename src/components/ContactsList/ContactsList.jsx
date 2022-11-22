@@ -1,21 +1,36 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
+import { Button, Contact, ContactList } from './ContactList.styled.js';
 
-const ContactsList = ({ filter, contacts } ) => {
-  
-    const normalizedFilter = filter.toLowerCase();
+const ContactsList = ({ filter, contacts, onDeleteContact }) => {
+  const normalizedFilter = filter.toLowerCase();
 
-    const visibleContacts = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizedFilter)
-    );
+  const visibleContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(normalizedFilter)
+  );
   return (
-    <ul>
+    <ContactList>
       {visibleContacts.map(({ name, number, id }) => (
-        <li key={id} id={id}>
+        <Contact key={id} id={id}>
           {name}: {number}
-        </li>
+          <Button onClick={() => onDeleteContact(id)}>Delete</Button>
+        </Contact>
       ))}
-    </ul>
+    </ContactList>
   );
 };
 export default ContactsList;
+
+ContactsList.propTypes = {
+  filter: PropTypes.string.isRequired,
+  onDeleteContact: PropTypes.func.isRequired,
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+      completed: PropTypes.bool,
+    })
+  ),
+};

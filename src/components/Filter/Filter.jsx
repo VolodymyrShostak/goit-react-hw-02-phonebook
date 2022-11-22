@@ -1,10 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const Filter = ({ value, onChange }) => {
+import { Title, Input } from './Filter.styled.js';
+
+const Filter = ({ title, value, onChange }) => {
     return (
       <>
-       
-        <input
+        <Title>{title}</Title>
+        <Input
           type="text"
           name="filter"
           value={value}
@@ -17,3 +20,9 @@ const Filter = ({ value, onChange }) => {
     );
 }
 export default Filter;
+
+Filter.propTypes = {
+  title: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
