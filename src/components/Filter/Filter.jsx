@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Filter = ( title, { value, onChange }) => {
+const Filter = ({ value, onChange }) => {
     return (
       <>
-        <p>{title}</p>
+       
         <input
           type="text"
           name="filter"

@@ -1,8 +1,8 @@
 import React from 'react';
 
 
-const ContactsList = ( filter, contacts ) => {
-  console.log({ contacts, filter });
+const ContactsList = ({ filter, contacts } ) => {
+  
     const normalizedFilter = filter.toLowerCase();
 
     const visibleContacts = contacts.filter(contact =>

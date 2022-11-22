@@ -29,20 +29,40 @@ class Phonebook extends React.Component {
       return alert(`${name} is already in contacts`);
     }
     this.setState({
-      contacts: [...contacts, { name, number, id }],
+      contacts: [{ name, number, id },...contacts ],
     });
   };
+
+
+
   render() {
+    const { contacts, filter } = this.state;
+    
+    // const normalizedFilter = filter.toLowerCase();
+    // const visibleContacts = contacts.filter(contact =>
+    //   contact.name.toLowerCase().includes(normalizedFilter)
+    // );
+  
     return (
       <div>
         <h2>Phonebook</h2>
         <Form onSubmit={this.onAddContact} />
         <h2>Contacts</h2>
-        <Filter title="Find contact by name" onChange={this.onChangeFilter} />
+        <h3>Find contacts by name</h3>
+
+        <Filter value={filter} onChange={this.onChangeFilter} />
         <ContactsList
           contacts={this.state.contacts}
           filter={this.state.filter}
         />
+
+        {/* <ul>
+          {visibleContacts.map(({ name, number, id }) => (
+            <li key={id} id={id}>
+              {name}: {number}
+            </li>
+          ))}
+        </ul> */}
       </div>
     );
   }
