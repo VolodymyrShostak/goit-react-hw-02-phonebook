@@ -1,72 +1,48 @@
 import React from 'react';
-import { nanoid } from 'nanoid';
+import Form from './../Form/Form';
+import Filter from '../Filter/Filter';
+import ContactsList from '../ContactsList/ContactsList';
 
 class Phonebook extends React.Component {
   state = {
-    contacts: [],
-    name: '',
-    number: '',
+    contacts: [
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    ],
+    filter: '',
+  };
+  onChangeFilter = e => {
+    this.setState({
+      filter: e.target.value,
+    });
   };
 
-  onNameChange = event => {
+  onAddContact = ({ name, number, id }) => {
+    const { contacts } = this.state;
+    if (
+      this.state.contacts.find(
+        contact => contact.name.toLowerCase() === name.toLowerCase()
+      )
+    ) {
+      return alert(`${name} is already in contacts`);
+    }
     this.setState({
-      name: event.target.value,
-      id: nanoid(),
-    });
-  };
-  handleNumberChange = event => {
-    this.setState({
-      number: event.target.value,
-      id: nanoid(),
-    });
-  };
-  onAddContact = event => {
-    const { name, contacts, number } = this.state;
-    event.preventDefault();
-    this.setState({
-      contacts: [...contacts, name, number],
-      name: '',
-      number: '',
+      contacts: [...contacts, { name, number, id }],
     });
   };
   render() {
-    const { name, contacts, id, number } = this.state;
     return (
       <div>
         <h2>Phonebook</h2>
-        <form onSubmit={this.onAddContact}>
-          <h3>Name</h3>
-          <input
-            type="text"
-            name="name"
-            value={name}
-            onChange={this.onNameChange}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-          />
-          <h3>Number</h3>
-          <input
-            type="tel"
-            name="number"
-            value={number}
-            onChange={this.handleNumberChange}
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-          />
-          <button type="submit" onClick={this.onAddContact}>
-            Add contact
-          </button>
-        </form>
+        <Form onSubmit={this.onAddContact} />
         <h2>Contacts</h2>
-        <ul>
-          {contacts.map((contact, index) => (
-            <li key={index} id={id}>
-              {contact} {number}
-            </li>
-          ))}
-        </ul>
+        <Filter title="Find contact by name" onChange={this.onChangeFilter} />
+        <ContactsList
+          contacts={this.state.contacts}
+          filter={this.state.filter}
+        />
       </div>
     );
   }
