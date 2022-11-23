@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 
-import { Title, Button, Input } from './Form.styled.js'; 
+import { Title, Button, Input } from './Form.styled.js';
 
 class Form extends React.Component {
   state = {
@@ -16,20 +16,18 @@ class Form extends React.Component {
       id: nanoid(),
     });
   };
-  
+  onSubmit = e => {
+    e.preventDefault();
+    this.props.onSubmit(this.state);
+    this.setState({
+      name: '',
+      number: '',
+    });
+  };
   render() {
     return (
       <>
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-            this.props.onSubmit(this.state);
-            this.setState({
-              name: '',
-              number: '',
-            });
-          }}
-        >
+        <form onSubmit={this.onSubmit}>
           <Title>Name</Title>
           <Input
             type="text"
@@ -61,5 +59,5 @@ class Form extends React.Component {
 export default Form;
 
 Form.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
